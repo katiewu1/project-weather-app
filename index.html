@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Neuton:wght@200;400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body id="body">
+    <h1>How's the Weather</h1>
+    <h3>Current location</h3>
+    <section class="current-weather-info">
+      <div id="getLocation"></div>
+      <div class="weather-icon" id="currentWeatherIcon"></div>
+      <div class="icon" id="icon"></div>
+    </section>
+
+    <section class="search-weather" id="searchWeather">
+      <p>Search for another city and see the weather forecast</p>
+      <input id="cityName" type="text" placeholder="search for a city..." />
+      <button id="searchCityButton">🔎</button>
+      <div id="results"></div>
+    </section>
+    <table id="table"></table>
+    <footer>
+      <p>
+        &#169;2021 by
+        <a href="https://www.linkedin.com/in/katie-wu-213a82150/" target="blank"
+          >Katie Wu</a
+        >
+      </p>
+    </footer>
+    <script src="./script.js"></script>
+  </body>
+</html>
