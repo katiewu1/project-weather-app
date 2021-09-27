@@ -45,7 +45,7 @@ function weather() {
         //console.log(json.weather[0].icon);
         const currentWeatherIconID = json.weather[0].icon;
         displayCurrentWeatherIcon.innerHTML += `
-          <img src="http://openweathermap.org/img/wn/${currentWeatherIconID}@2x.png" alt="weather icon"/>
+          <img src="https://openweathermap.org/img/wn/${currentWeatherIconID}@2x.png" alt="weather icon"/>
           `;
         // json.weather[0].main = 'Rain';
 
@@ -167,7 +167,7 @@ let fetchForecast = (city) => {
 
         document.querySelectorAll('.icons').forEach((icon, index) => {
           icon.innerHTML += `
-            <img src="http://openweathermap.org/img/wn/${filteredWeatherIcons[index]}@2x.png" alt="weather icon"/>
+            <img src="https://openweathermap.org/img/wn/${filteredWeatherIcons[index]}@2x.png" alt="weather icon"/>
             `;
         });
 
