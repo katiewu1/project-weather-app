@@ -139,7 +139,7 @@ let fetchForecast = (city) => {
         ];
 
         filteredDateAndTime.map((item, index) => {
-          allDateAndTime[index] = item.dt_txt;
+          allDateAndTime[index] = item.dt * 1000;
         });
         //console.log(allDateAndTime);
 
