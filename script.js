@@ -11,17 +11,12 @@ const table = document.getElementById('table');
 const results = document.getElementById('results');
 
 // to get the current location och display weather info
-function weather() {
+const weather = () => {
   navigator.geolocation.getCurrentPosition(success, error);
 
   function success(position) {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
-    //console.log('latitude: ', latitude);
-    //console.log('longitude: ', longitude);
-
-    // getLocation.innerHTML =
-    //   'Latitude is ' + latitude + '° Longitude is ' + longitude + '°';
 
     fetch(
       `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`
@@ -30,8 +25,6 @@ function weather() {
         return response.json();
       })
       .then((json) => {
-        //console.log(json.name);
-
         // get the temperature and convert from Kelvin to Celsius and with non decimal
         const tempCelsius = (json.main.temp - 273.15).toFixed(0);
 
@@ -42,12 +35,10 @@ function weather() {
           <p class="current-description">${json.weather[0].description}</p>
           `;
 
-        //console.log(json.weather[0].icon);
         const currentWeatherIconID = json.weather[0].icon;
         displayCurrentWeatherIcon.innerHTML += `
           <img src="https://openweathermap.org/img/wn/${currentWeatherIconID}@2x.png" alt="weather icon"/>
           `;
-        // json.weather[0].main = 'Rain';
 
         if (json.weather[0].main === 'Clouds') {
           body.style.background = '#F4F7F8';
@@ -78,16 +69,11 @@ function weather() {
     getLocation.innerHTML = 'Unable to retrieve your location';
   }
   getLocation.innerHTML = 'Locating...';
-}
+};
 weather();
 
-// to search for a city name and display weather info for the next five days
-
-// cityName.addEventListener('keyup', (event) => {
-//   if (event.key === 'Enter') {
-//     console.log(event.target.value);
-
-let fetchForecast = (city) => {
+// function to fetch weather forecast
+const fetchForecast = (city) => {
   console.log('city: ', city);
 
   table.innerHTML = '';
@@ -97,8 +83,7 @@ let fetchForecast = (city) => {
       return response.json();
     })
     .then((json) => {
-      console.log(json);
-
+      // if the search result isn't a city it will display city not found
       if (json.cod === '404') {
         results.innerHTML = '<p>city not found  :(</p>';
       } else {
@@ -108,6 +93,7 @@ let fetchForecast = (city) => {
           </div>
           `;
 
+        // function to draw a new row in a table
         const newTableRow = () => {
           table.innerHTML += `
               <tr>
@@ -118,16 +104,19 @@ let fetchForecast = (city) => {
             `;
         };
 
+        // we want five rows, one row for each day
         for (i = 0; i < 5; i++) {
           newTableRow();
         }
 
+        // filter the forecast so we can get the date for each day
         const filteredDateAndTime = json.list.filter((item) =>
           item.dt_txt.includes('21:00')
         );
-        //console.log(filteredForecast);
         const allDateAndTime = [];
         const allDayNames = [];
+        // create an array with the names of the week
+        // weekday[0] = 'Sunday', weekday[1] = 'Monday' and so on
         const weekday = [
           'Sunday',
           'Monday',
@@ -138,22 +127,23 @@ let fetchForecast = (city) => {
           'Saturday',
         ];
 
+        // store just the date and time in variable filteredDateAndTime
         filteredDateAndTime.map((item, index) => {
           allDateAndTime[index] = item.dt * 1000;
         });
-        //console.log(allDateAndTime);
-
+        // getDay(): each day will return a number from 0-6, where 0 is Sunday and 6 is Saturday
         allDateAndTime.forEach((container, index) => {
           allDayNames[index] = new Date(container).getDay();
-          //console.log(weekday[allDayNames[index]]);
         });
-
+        // depending on the number we get from getDay(),
+        // we want to display the whole name by using the previously created array weekday[]
         document.querySelectorAll('.day').forEach((name, index) => {
           name.innerHTML += `
             ${weekday[allDayNames[index]]}
             `;
         });
-
+        // want to display the weather icons from 12:00 (GMT+2)
+        // the icons won't be really accurate because of time zone, need to change the code so it fit all cities!!!
         const filteredTwelveClock = json.list.filter((item) =>
           item.dt_txt.includes('12:00')
         );
@@ -162,25 +152,17 @@ let fetchForecast = (city) => {
           filteredWeatherIcons[index] = item.weather[0].icon;
         });
 
-        console.log(filteredTwelveClock);
-        console.log(filteredWeatherIcons);
-
         document.querySelectorAll('.icons').forEach((icon, index) => {
           icon.innerHTML += `
             <img src="https://openweathermap.org/img/wn/${filteredWeatherIcons[index]}@2x.png" alt="weather icon"/>
             `;
         });
 
-        // const filteredTempMax = json.list.map(
-        //   (item, index) => item[index].main.temp_max
-        // );
         const filteredAllTempMax = [];
         json.list.forEach((_, index) => {
           // store all of the temp_max in Celsius, 8 temp_max per day, total 40
           filteredAllTempMax[index] = json.list[index].main.temp_max - 273.15;
         });
-        // console.log('temp max: ', filteredTempMax);
-        //console.log('temp max all: ', filteredAllTempMax);
 
         let tempMaxDayOne = filteredAllTempMax[0];
         for (i = 0; i < 8; i++) {
@@ -216,15 +198,13 @@ let fetchForecast = (city) => {
             tempMaxDayFive = filteredAllTempMax[i];
           }
         }
-        // console log and display the number with non decimal
-        //console.log('temp max day one: ', tempMaxDayOne.toFixed(0));
 
         const filteredAllTempMin = [];
         json.list.forEach((_, index) => {
           // store all of the temp_min in Celsius, 8 temp_min per day, total 40
           filteredAllTempMin[index] = json.list[index].main.temp_min - 273.15;
         });
-        //console.log('temp min all: ', filteredAllTempMin);
+
         let tempMinDayOne = filteredAllTempMin[0];
         for (i = 0; i < 8; i++) {
           if (tempMinDayOne > filteredAllTempMax[i]) {
@@ -259,7 +239,6 @@ let fetchForecast = (city) => {
             tempMinDayFive = filteredAllTempMax[i];
           }
         }
-        //console.log('temp min day one: ', tempMinDayOne.toFixed(0));
 
         const allMaxMinTemp = [
           `${tempMaxDayOne.toFixed(0)}° / ${tempMinDayOne.toFixed(0)} °C`,
@@ -277,7 +256,6 @@ let fetchForecast = (city) => {
       }
     });
 };
-// });
 
 searchCityBtn.addEventListener('click', () => {
   fetchForecast(cityName.value);
