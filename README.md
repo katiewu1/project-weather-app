@@ -1,13 +1,12 @@
 # Weather App
 
-Replace this readme with your own information about your project.
+Create a Weather App in a group to practice Mob-programming. Working with branches on GitHub and using APIs.
 
-Start by briefly describing the assignment in a sentence or two. Keep it short and to the point.
+For the group project's repo: https://github.com/efstasia/project-weather-app
 
-## The problem
-
-Describe how you approached to problem, and what tools and techniques you used to solve it. How did you plan? What technologies did you use? If you had more time, what would be next?
+This repo that you are reading now, is a repo that I used to practice to implement a search field to fetch another city's weather forecast. And for testing to fetch other data.
 
 ## View it live
 
-Every project should be deployed somewhere. Be sure to include the link to the deployed project so that the viewer can click around and see what it's all about.
+Link to group project: https://thebetterfoxes.netlify.app/
+Link to my test project: https://howsyourweather.netlify.app/
